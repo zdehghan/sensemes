@@ -1,0 +1,7 @@
+.idea/*
+.DS_Store
+*swp
+*.orig
+.rvmrc.*
+tmp/*
+log/*
