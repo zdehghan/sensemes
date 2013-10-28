@@ -1,7 +1,7 @@
 sensemes
 ========
 
-A playground for build tiny sensors mesh networked wirelessly
+A playground for building tiny sensors mesh networked wirelessly
 
 see also
 ========
