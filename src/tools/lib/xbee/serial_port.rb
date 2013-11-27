@@ -22,8 +22,9 @@ module XBee
           set_terminal_params
 
           # test if port opened and responding to command mode
-          init_cmd_mode
-          $log.debug("device #{dev_path_name} initialized successfully")
+          # commented this out as it doesn't like two consecutive +++ commands
+          # init_cmd_mode
+          # $log.debug("device #{dev_path_name} initialized successfully")
 
           # run a block if given on this device & then close the device
           if block_given?

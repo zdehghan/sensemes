@@ -16,7 +16,7 @@ module XBee
         end
       end
 
-      ATID = Cmd.new("ATID\r\n", 'PAN ID')
+      ATID = Cmd.new("ATID", 'PAN ID')
       MODE = Cmd.new('+++', 'Initialize Command Mode +++')
 
       # Put device into AT command mode
@@ -28,24 +28,29 @@ module XBee
 
       # Get PAN ID - all xbees on the same network shall have the same PAN ID
       def pan_id
-        pan_id = run_get_cmd(ATID)
-        !pan_id.nil? and !pan_id.empty?
-        return pan_id
+        run_get_cmd(ATID)
       end
 
       def run_get_cmd(cmd)
         init_cmd_mode
-        $log.debug "Running command '#{cmd.text.strip}'"
-        self.device.write(cmd.text)
-        self.device.readline("\r\n").strip
+        $log.debug "Running command '#{cmd.text}'"
+        self.device.write("#{cmd.text}\r\n")
+        sleep(2)
+        value = self.device.readline("\r\n").strip
+        if value.nil? or value.empty?
+          raise Exception "Failed to run command '#{cmd.text}' no valid value '#{value}' returned" 
+        end
+        $log.debug "Completed command '#{cmd.text}' successfully - got '#{value}'"
+        return value
       end
       private :run_get_cmd
 
       def cmd_run_ok?(cmd)
         ok = self.device.readline("\r\n").strip
         if !is_ok(ok)
-          raise Exception, "#{cmd.desc} failed - heard no OK from the device - expected 'OK' - got ***#{ok}***"
+          raise Exception, "#{cmd.desc} failed - heard no OK from the device - expected 'OK' - got '#{ok}'"
         end
+        $log.debug "Completed command '#{cmd.text}' successfully - got '#{ok}'!"
       end
 
       def is_ok(s)
