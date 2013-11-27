@@ -1,0 +1,4 @@
+source 'http://rubygems.org'
+
+gem 'rake', '0.9.6'
+gem 'serialport', '1.1.0'
